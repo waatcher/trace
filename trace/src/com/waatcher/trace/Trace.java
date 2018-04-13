@@ -27,7 +27,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Trace {
 	public enum Status {
-		ERROR, OK, VALIDATION_ERROR, WARN, ACCESS_DENIED
+		ERROR, OK, VALIDATION_ERROR, WARN, ACCESS_DENIED, SKIP
 	}
 
 	private String className;
