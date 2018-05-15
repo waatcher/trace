@@ -40,6 +40,8 @@ public class Trace {
 	@Builder.Default
 	private List<String> messages = new ArrayList<>();
 	@Builder.Default
+	private List<String> errorMessages = new ArrayList<>();
+	@Builder.Default
 	private List<String> times = new ArrayList<>();
 	private String method;
 	@Builder.Default
@@ -59,6 +61,16 @@ public class Trace {
 		lastDateTime = startDateTime;
 		this.method = method;
 		this.className = className;
+	}
+
+	public void addErrorMessage(String format, Object... args) {
+		if (args.length > 0) {
+			errorMessages.add(String.format(format, args));
+		} else if (format == null) {
+			errorMessages.add("java.lang.NullPointerException");
+		} else {
+			errorMessages.add(format);
+		}
 	}
 
 	public void addItem(Trace item) {
@@ -97,6 +109,16 @@ public class Trace {
 			finish();
 		}
 		return duration;
+	}
+
+	public List<String> getErrorMessages() {
+		for (Trace item : items) {
+			if (!item.getErrorMessages().isEmpty()) {
+				errorMessages.addAll(item.getErrorMessages());
+			}
+		}
+
+		return errorMessages;
 	}
 
 	public Status getStatus() {
